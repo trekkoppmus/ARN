@@ -1,0 +1,1808 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
+// for å laste inn hardkodet fil - kan slettes når løsning er oppned#last-inn-xml input {
+#last-inn-xml input {
+    height: unset;
+}
+
+$font-stack: "Montserrat", sans-serif;
+$font-body-text: "Raleway", sans-serif;
+
+// colors
+$black: #000000;
+$white: #ffffff;
+$grey: #8A8A8A;
+$light-grey: #E5E5E5;
+$lighter-grey: #f2f2f2;
+$dark-grey: #808285;
+$darker-grey: #58595B;
+$beige: #978981;
+$light-beige: #E4E0DD;
+//$orange: #F18842;
+$red: #ad0031;
+$mid-red: #920A38;
+$dark-red: #500A21;
+$pink: #c24d6d;
+//$green: #339966;
+$mint-green: #b3dbdb;
+$blue: #009fbc;
+$dark-blue: #076a81;
+$purple: #7d3fb8;
+
+// tvinger hele løsningen til å bruke spesifisert font, selv ved inline style
+* {
+    font-family: $font-stack !important;
+}
+
+body {
+    background-color: $white;
+}
+
+#digiforms-page-regions, #region-body {
+    height: 100vh !important;
+}
+
+// fjerner stygg fokusmarkering
+:focus {
+     outline:none;
+}
+::-moz-focus-inner {
+     border:0;
+}
+
+// a {
+//     color: $white;
+// }
+
+legend {
+    margin-left: -0.1em;
+}
+
+.text {
+    color: #fff;
+    font-size: 1em;
+}
+
+// for ting vi ikke vil vise i GUIet
+.hidden {
+     display: none;
+}
+
+
+/*************************************************/
+/*                  PAGE LOADING                 */
+/*************************************************/
+
+// fjerner loading-gizmo og legger til nytt laget i CSS
+#digiforms_progress {
+    background-image: none !important;
+    border: 16px solid $lighter-grey;
+    border-top: 16px solid $pink;
+    border-radius: 50%;
+    width: 2em;
+    height: 2em;
+    position: fixed;
+    right: 0;
+    left: 0;
+    margin-right: auto;
+    margin-left: auto;
+    top: calc((100vh/2)*0.8);
+    animation: spin 2s linear infinite;
+    -moz-animation: spin 2s linear infinite;
+    -webkit-animation: spin 2s linear infinite;
+    -o-animation: spin 2s linear infinite;
+    -ms-animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -ms-transform: rotate(0deg); }
+    100% { transform: rotate(360deg); -moz-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -ms-transform: rotate(360deg); }
+}
+
+
+/*************************************************/
+/*                    INPUT                      */
+/*************************************************/
+input, textarea {
+     border: none !important;
+     border-bottom: solid 6px $pink !important;
+     border-radius: unset !important;
+     // z-index: 1;
+     padding: 0.7em !important;
+     font-size: 1.3em !important;
+     font-weight: bold !important;
+}
+textarea {
+     font-weight: normal !important;
+     padding-bottom: 2em !important;
+     line-height: 1.5;
+}
+input:focus, textarea:focus {
+     border-bottom: solid 6px $black !important;
+}
+
+
+
+/*************************************************/
+/*                   KNAPPER                     */
+/*************************************************/
+.btn {
+    height: 4em;
+    width: 100%;
+    color: $white;
+    border: solid 2px $white;
+    background-color: transparent;
+    position: relative;
+    font-size: 0.9em;
+}
+.btn:hover, .btn:focus {
+    background-color: $dark-red !important;
+}
+
+button:focus {
+     outline: solid 5px $blue !important;
+     z-index: 3 !important;
+}
+
+// #wrap-login button:focus {
+//      outline: solid 5px $black !important;
+//      z-index: 3 !important;
+// }
+
+/*************************************************/
+/*                    BOKSER                     */
+/*************************************************/
+@mixin box-shadow() {
+     -webkit-box-shadow: 1px 2px 8px 1px rgba(33, 15, 15, 0.2);
+     -moz-box-shadow: 1px 2px 8px 1px rgba(33, 15, 15, 0.2);
+     box-shadow: 1px 2px 8px 1px rgba(33, 15, 15, 0.2);
+}
+
+
+/*************************************************/
+/*                    HEADER                     */
+/*************************************************/
+#header {
+     width: 90%;
+     margin: 0.8em auto;
+     position: relative;
+
+     #header-content {
+          display: flex;
+          justify-content: space-between;
+
+          .h1 {
+               display: none;
+          }
+          #logout-header {
+               display: none;
+          }
+     }
+}
+#logo {
+    width: 6em !important;
+}
+
+.header-folj-arendet { // navn på fane
+     font-size: 1.6em;
+     padding: 2% 7% 5%;
+     font-weight: bold;
+     text-transform: uppercase;
+}
+
+
+/*************************************************/
+/*                FEILMELDINGER                  */
+/*************************************************/
+// skjuler alle custom valideringsmeldinger
+[id^="validate"] {
+    visibility: hidden;
+    height: 0px;
+}
+// legger feilmelding UNDER felt
+.label_control {
+    width: 100%;
+    display: flex !important;
+    flex-direction: column-reverse;
+}
+.digiforms_validation_message {
+    font-weight: bold;
+    font-size: 0.8em;
+    background: none;
+    display: block;
+    background-color: $pink;
+    color: $white;
+    padding: 0.8em 1em;
+    z-index: 1;
+    position: relative;
+}
+
+
+/*************************************************/
+/*                  LOGIN-SIDE                   */
+/*************************************************/
+.popup-container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.8) !important;
+    z-index: 10000;
+}
+
+.popup-window {
+     padding: 1em;
+     margin-top: 5%;
+     background-color: #ad0031;
+     max-width: 30em;
+     margin-left: auto;
+     margin-right: auto;
+}
+
+.logout-alert {
+     @extend .popup-window;
+     .btn {
+         margin-top: 1em;
+     }
+}
+
+#wrap-login {
+     height: 100%;
+
+     label {
+          font-size: 1.1em;
+     }
+
+     .reset-password {
+          @extend .popup-window;
+     }
+
+     .page-container {
+
+          > fieldset > legend {
+               @extend .header-folj-arendet;
+          }
+          .accordion {
+               background-image: none;
+          }
+          .element-container {
+              padding: 7%;
+              background-color: $red;
+          }
+     }
+}
+
+#password-forgotten {
+     margin-left: -0.5em;
+     background-color: transparent;
+     border: none;
+     color: white;
+     text-decoration: underline;
+     margin-bottom: 1em;
+}
+#password-container {
+    position: relative;
+}
+#view-password {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 60px !important;
+    height: 60px;
+    color: transparent !important;
+    background-size: 1.8em;
+    display: none;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 2 !important;
+}
+// gjemmer default passordvisningsknapp i IE
+input[type=password]::-ms-reveal,
+input[type=password]::-ms-clear
+{
+   display: none;
+}
+
+
+/******************************************/
+/*            KNAPP TIL TOPP              */
+/******************************************/
+
+#to-top {
+    background-color: $black;
+    opacity: 0.5;
+    position: fixed !important;
+    bottom: .83333em;
+    right: 1.2em;
+    color: transparent;
+    background-image: url("../ImageDB?imageName=icon_toggle_menu.png");
+    background-size: 22px;
+    background-repeat: no-repeat;
+    background-position: center;
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+
+    &:hover {
+        opacity: 1;
+        background-color: $grey;
+        background-image: url("../ImageDB?imageName=icon_toggle_menu_black.png");
+    }
+}
+
+
+/*************************************************/
+/*         MENYSTRUKTUR - FÖLJ ÄRENDET           */
+/*************************************************/
+
+// skjuler infotekst som skal vises på stor skjerm
+.big-screen {
+     display: none;
+}
+
+.page-container {
+     position: relative;
+
+     h2 {
+         display: none;
+     }
+
+     .status-container {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0.6em;
+          background-color: $light-beige;
+
+         .status {
+              background-color: $dark-grey;
+              color: white;
+              font-weight: bold;
+              font-size: 0.8em;
+              border-radius: 100%;
+              height: 4em;
+              min-width: 4em;
+              padding: 0.6em;
+              // margin-right: 1em;
+              line-height: 4em;
+          }
+          .status-text {
+               width: calc(100% - 4em - 1em);
+               font-size: 0.9em;
+               padding: 0.5em 1em;
+          }
+     }
+
+     // skjuler container for todelt innhold på større skjerm
+     &.big-screen-container {
+          display: none;
+     }
+
+     &.small-screen-container > fieldset > legend {
+          @extend .header-folj-arendet;
+     }
+
+     .accordion-content {
+          display: none; // alt innhold er lukket by default
+          padding: 2em 7% !important;
+          background-color: $lighter-grey;
+     }
+
+     .accordion {
+
+          .accordion-btn {
+               //-webkit-margin: -0.05em 0em; // iOS legger på noe padding på buttons, dette er for å motvirke dette
+               height: 100%;
+          }
+
+          .left {
+               margin-left: -9%;
+          }
+          .right {
+               margin-right: -9%;
+          }
+
+          // Menyknapper - åpne/lukke
+          .btn-toggle-menu {
+               width: 100%;
+               text-align: left;
+               color: white;
+               font-size: 1.2em;
+               font-family: $font-stack;
+               font-weight: bold;
+               padding: 6.5%;
+               padding-left: 3.9em !important; /* gjør plass til ikon */
+               background-size: 1.7em;
+               background-position: 1em center !important;
+               background-repeat: no-repeat;
+               border: none;
+               position: relative;
+
+
+               // Setter farge og ikon på hver meny-knapp
+               &#btn-historik {
+                    background-color: $red;
+                    background-image: url("../ImageDB?imageName=icon_history.png");
+                    // vising av antall notifications på Historik-knapp
+                    > span {
+                         display: block;
+                    }
+                    span span {
+                         font-size: 0.6em;
+                    }
+                    span span:first-of-type {
+                         padding: 0.15em 0.5em;
+                         border: solid $white 1px;
+                    }
+
+               }
+               &#btn-komplettera {
+                    background-color: $mid-red;
+                    background-image: url("../ImageDB?imageName=icon_add_document.png");
+               }
+               &#btn-om-arendet {
+                    background-color: $dark-red;
+                    background-image: url("../ImageDB?imageName=icon_information.png");
+               }
+               // knapp får retningspil for indikasjon på om menyalternativ er åpnet eller ikke
+               &::before {
+                    content: '';
+                    background-image: url("../ImageDB?imageName=icon_toggle_menu.png");
+                    background-size: 1.2rem;
+                    position: absolute;
+                    right: 1.4rem;
+                    background-repeat: no-repeat;
+                    top: 0;
+                    bottom: 0;
+                    width: 1.2em;
+                    background-position: 50%;
+               }
+
+               // roterer pil som indikerer om boks er åpen eller lukket
+               &.open::before {
+                    -webkit-transform: rotate(180deg);
+                    transform: rotate(180deg);
+               }
+          }
+          // Lukke-knapper for hver enkelt kategori
+          .btn-close-menu {
+               border-radius: 50%;
+               width: 4em;
+               height: 4em;
+               overflow: hidden;
+               color: transparent;
+               margin: auto;
+               display: block;
+               border: none;
+               background-color: $black;
+               background-image: url("../ImageDB?imageName=icon_toggle_menu.png");
+               background-size: 1.2rem;
+               background-repeat: no-repeat;
+               background-position: 50% 55%;
+               -webkit-transform: rotate(180deg); // bildet vises oppned som default
+               transform: rotate(180deg);
+          }
+          .btn-close-menu:hover, .btn-close-menu:focus {
+              background-color: $dark-red;
+          }
+
+          #acc-komplettera {
+               background-color: $lighter-grey;
+
+               .text {
+                    color: $black;
+               }
+
+               textarea {
+                    @include box-shadow();
+               }
+          }
+     }
+
+
+/*************************************************/
+/*                  MENY - INFO                  */
+/*************************************************/
+
+     // første "valg" i menyen
+     .info-container {
+
+          #info-arende {
+               background-color: transparent;
+               position: absolute;
+               top: -0.7em;
+               color: transparent !important;
+               width: 100%;
+               height: 3.5em;
+               border: none;
+
+              /* toggle-knapp */
+              &::before {
+                   background-image: url("../ImageDB?imageName=icon_toggle_menu_black.png") !important;
+              }
+          }
+          #info-text-arendet {
+               margin-top: -7% !important;
+               // padding: 2.5em 7%;
+          }
+          // bakgrunnen på denne boksen skal være hvit
+          .accordion-content {
+               background-color: $white;
+          }
+     }
+
+     /*************************************************/
+     /*                MENY - HISTORIK                */
+     /*************************************************/
+
+     .message {
+          background-color: $white;
+          position: relative;
+          margin-bottom: 3em;
+          position: relative;
+          max-width: 36em;
+          margin-left: auto;
+          margin-right: auto;
+          @include box-shadow();
+
+          #temp-message_legend {
+               background-color: black;
+               color: transparent;
+               background-image: url("../ImageDB?imageName=icon_wait.png");
+               background-size: 37px;
+               background-repeat: no-repeat;
+               background-position: 45% 48%;
+          }
+
+          .message_content {
+              padding: 5em 2em 2em !important;
+
+              &#temp-message_content {
+                   padding-top: 5em !important;
+               }
+
+              // setter kommentar-pil i underkant av hver melding
+              &::after, &::before {
+                    content:'';
+                    height: 0;
+                    width: 0;
+                    position: absolute;
+                    bottom: -2em;
+              }
+
+              &.left_content::after {
+                    left: 8%;
+                    border-top: 2em solid $white;
+                    border-right: 2em solid transparent;
+                    z-index: 2;
+              }
+
+              &.midle_content::after, &.temp_content::after {
+                    left: calc(50% - 1.4em);
+                    border-top: 2em solid $white;
+                    border-right: 1.4em solid transparent;
+                    border-left: 1.4em solid transparent;
+                    z-index: 2;
+              }
+
+              &.right_content::after {
+                   right: 8%;
+                   border-top: 2em solid $white;
+                   border-left: 2em solid transparent;
+                   z-index: 2;
+              }
+
+              .btn-toggle-attachments {
+                    border: none;
+                    color: white;
+                    height: 3.6em;
+                    width: 12em;
+                    font-size: 1em;
+                    font-weight: bold;
+                    text-align: left;
+                    padding-left: 1.6em;
+                    background-image: url("../ImageDB?imageName=icon_attachment.png");
+                    background-size: 2em;
+                    background-repeat: no-repeat;
+                    background-position: calc(100% - 1.2em) center;
+                    margin-top: 1.6em;
+
+                         &.btn-color-anmalare {
+                              background-color: $purple;
+                         }
+                         &.btn-color-motpart {
+                              background-color: $blue;
+                         }
+                         &.btn-color-motpart-1 {
+                              background-color: $blue;
+                         }
+                         &.btn-color-motpart-2 {
+                              background-color: $beige;
+                         }
+                         &.btn-color-motpart-3 {
+                              background-color: $darker-grey;
+                         }
+                         &.btn-color-handlaggare {
+                              background-color: $red;
+                         }
+                         &:hover {
+                              background-color: $dark-red;
+                         }
+               }
+               .attachment { // liste med vedlegg er lukket som default
+                   display: none;
+               }
+          }
+          // markerer uleste meldinger
+          .unread-NY-position {
+               position: absolute;
+               left: 3.4em;
+               top: 0.3em;
+               font-size: 1.2em;
+               font-weight: bold;
+          }
+          .comment-sign-outline {
+               z-index: 1;
+               bottom: -2.67em;
+          }
+          .unread_content {
+               &.anmalare_content {
+                    outline: solid 7px $purple;
+                    .unread-NY {
+                         @extend .unread-NY-position;
+                         color: $purple;
+                    }
+                    &.left_content::before {
+                         @extend .comment-sign-outline;
+                         left: calc(8% - 0.35em);
+                         border-right: 2.9em solid transparent;
+                         border-top: 2.9em solid $purple;
+                         bottom: -2.9em;
+                    }
+               }
+               &.handlaggare_content {
+                    outline: solid 7px $red;
+                    .unread-NY {
+                         @extend .unread-NY-position;
+                         color: $red;
+                    }
+                    &.midle_content::before {
+                         @extend .comment-sign-outline;
+                         left: calc(50% - 1.83em);
+                         border-right: 1.83em solid transparent;
+                         border-left: 1.83em solid transparent;
+                         border-top: 2.5em solid $red;
+                    }
+               }
+               &.motpart-1_content {
+                    outline: solid 7px $blue;
+                    .unread-NY {
+                         @extend .unread-NY-position;
+                         color: $blue;
+                    }
+                    &.right_content::before {
+                         @extend .comment-sign-outline;
+                         right: calc(8% - 0.35em);
+                         border-left: 2.9em solid transparent;
+                         border-top: 2.9em solid $blue;
+                         bottom: -2.9em;
+                    }
+               }
+               &.motpart-2_content {
+                    outline: solid 7px $beige;
+                    .unread-NY {
+                         @extend .unread-NY-position;
+                         color: $beige;
+                    }
+                    &.right_content::before {
+                         @extend .comment-sign-outline;
+                         right: calc(8% - 0.35em);
+                         border-left: 2.9em solid transparent;
+                         border-top: 2.9em solid $beige;
+                         bottom: -2.9em;
+                    }
+               }
+               &.motpart-3_content {
+                    outline: solid 7px $darker-grey;
+                    .unread-NY {
+                         @extend .unread-NY-position;
+                         color: $darker-grey;
+                    }
+                    &.right_content::before {
+                         @extend .comment-sign-outline;
+                         right: calc(8% - 0.35em);
+                         border-left: 2.9em solid transparent;
+                         border-top: 2.9em solid $darker-grey;
+                         bottom: -2.9em;
+                    }
+               }
+          }
+
+          // Setter ulik farge på de forskjellige rollene
+          .anmalare_legend {
+               background-color: $purple !important;
+          }
+          .handlaggare_legend {
+               background-color: $red;
+          }
+          .motpart_legend {
+               background-color: $blue;
+          }
+          .motpart-1_legend {
+               background-color: $blue;
+          }
+          .motpart-2_legend {
+               background-color: $beige;
+          }
+          .motpart-3_legend {
+               background-color: $darker-grey;
+          }
+
+          .role {
+               position: absolute;
+               top: 1.7em;
+               left: 3.4em;
+               font-size: 1.2em;
+               font-weight: bold;
+
+               &.anmalare {
+                    color: $purple;
+               }
+               &.handlaggare {
+                    color: $red;
+               }
+               &.motpart, &.motpart-1 {
+                    color: $blue;
+               }
+               &.motpart-2 {
+                    color: $beige;
+               }
+               &.motpart-3 {
+                    color: $darker-grey;
+               }
+          }
+
+          .name {
+               font-size: 0.8em;
+               font-weight: normal;
+               text-transform: uppercase;
+               margin-top: -1.8em;
+               margin-left: 2.7em;
+               margin-bottom: 1.4em;
+          }
+
+          .receiver {
+               background-image: url("../ImageDB?imageName=icon_arrow_right.png");
+               background-repeat: no-repeat;
+               background-size: 1.2em;
+               background-position: top left;
+               // margin-left: 1.9em;
+
+               .receiver-list {
+                    margin: 0em 2.1em 1.2em;
+               }
+          }
+          .date {
+               position: absolute;
+               top: 1em;
+               right: 1em;
+               color: $grey;
+          }
+
+          .free-text {
+               line-height: 1.8;
+          }
+
+          .link {
+               text-decoration: underline;
+               font-weight: bold;
+               margin-top: 1.2em;
+               cursor: default !important;
+          }
+          .link:hover {
+               color: $red;
+          }
+
+     }
+     .message_legend {
+          width: 2em !important;
+          height: 2em;
+          text-align: center;
+          padding-top: 0.4em;
+          font-size: 1.6em;
+          font-weight: bold;
+          color: white;
+          margin-left: 0em;
+          position: absolute;
+     }
+
+
+
+     /*************************************************/
+     /*               MENY - KOMLETTERA               */
+     /*************************************************/
+
+     #btn-submit {
+          background-color: $black;
+          height: 6em;
+     }
+     .textarea-container {
+          position: relative;
+          .char-count {
+               position: absolute;
+               bottom: 0.6em;
+               left: 0;
+               right: 0;
+               font-weight: bold;
+               text-align: center;
+               width: 6em;
+               margin: auto;
+               z-index: 1;
+               color: $red;
+          }
+          label {
+               color: transparent;
+          }
+     }
+     // tekst med hjelpetekst
+     .upload-helptext {
+          color: $white;
+          display: inline-block;
+          margin-bottom: 1em;
+          max-width: calc(100% - 5em);
+     }
+
+     .round-btn {
+          background-color: black;
+          border: solid 1px transparent;
+          border-radius: 100%;
+          height: 3em;
+          width: 3em;
+          color: transparent;
+          overflow: hidden;
+          position: relative;
+
+          &:hover, &:focus {
+               background-color: $dark-red !important;
+          }
+     }
+     // knapp for å vise/skjule hjelpetekst
+     .help-btn {
+          @extend .round-btn;
+          margin-left: 0em;
+          top: -0.6em;
+
+          &::after {
+               content: "i";
+               position: absolute;
+               font-size: 1.8em;
+               font-weight: bold;
+               top: 0.2em;
+               right: 0;
+               color: $white;
+               width: 100%;
+          }
+     }
+     .close-btn {
+          @extend .round-btn;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+
+          &::after {
+               content: "\d7";
+               position: absolute;
+               font-size: 2.2em;
+               right: 0;
+               color: $white;
+               line-height: 0em;
+               width: 100%;
+               font-weight: bold;
+          }
+     }
+
+     // setter boks med hjelpetekst til å være skjult som default tilstand
+     .help-text {
+          @include box-shadow();
+          display: none;
+          background-color: $white;
+          padding: 5% !important;
+          margin-bottom: 1em;
+
+          div {
+               font-size: 16px !important;
+          }
+     }
+
+     // liste med opplastede vedlegg (repres. av ett vedleggselement)
+     .file-download {
+          position: relative;
+          margin-bottom: 3em;
+          margin-top: 2em;
+
+          &_content {
+               padding: 3%;
+               background-color: $light-beige;
+               border-color: $black;
+          }
+
+          legend {
+               position: absolute;
+               width: auto !important;
+               max-width: 100% !important;
+               padding: 0.74em 1em;
+               background-color: $black;
+               color: $white;
+               font-weight: bold;
+               font-size: 1.2em;
+               line-height: 1;
+               margin: 3%;
+          }
+
+          .file-type-container {
+               position: relative;
+
+               .file-type-dropdown {
+                    color: transparent;
+
+                    .label_text {
+                         display: none !important;
+                    }
+                    .label_control {
+                         width: calc(100% - 3.5em) !important;
+                    }
+
+                    /* fjerne stil, legger til custom */
+                    select {
+                         -webkit-appearance: none;
+                         -moz-appearance: none;
+                         -o-appearance: none;
+                         -ms-appearance: none;
+                         background-color: $white;
+                         background-image: url("../ImageDB?imageName=icon_toggle_menu_black.png");
+                         background-repeat: no-repeat;
+                         background-position: 97% center;
+                         background-size: 22px;
+                         height: 3em;
+                         padding: 0em 0em 0em 1.2em !important;
+                         font-size: 1em !important;
+                         font-weight: bold !important;
+                         border-width: 3px !important;
+                         border-color: $black;
+
+                         &::-ms-expand {
+                              display: none;
+                         }
+
+                         &:hover, &:focus {
+                              //border-color: $blue;
+                              outline: solid 4px $blue;
+                              z-index: 1;
+                         }
+                    }
+               }
+
+               .file-type-freetext {
+                    background-color: black;
+                    color: white;
+                    width: calc(100% - 3.5em) !important;
+                    padding-top: 0.4em;
+
+                    label {
+                         font-size: 0.9em;
+                         font-weight: 800;
+                         padding: 1.5em;
+                    }
+
+                    input {
+                         border: solid black 3px !important;
+                         border-bottom: solid 6px $mid-red !important;
+                         font-size: 1.1em !important;
+                         padding: 1em !important;
+
+                         &:focus {
+                              border-bottom: solid 6px $black !important;
+                         }
+                    }
+               }
+
+               .hide {
+                    display: none;
+               }
+
+               .delete-btn {
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    right: 0;
+                    color: transparent;
+                    overflow: hidden;
+                    background-color: $red;
+                    border: none;
+                    width: 3.6em;
+                    background-image: url("../ImageDB?imageName=icon_delete.png");
+                    background-size: 1.8em;
+                    background-repeat: no-repeat;
+                    background-position: center;
+
+                    &:hover, &:focus {
+                         background-color: $dark-red !important;
+                         border-color: $dark-red !important;
+                    }
+               }
+          }
+
+
+          .wrap-file-btns {
+               position: relative;
+               display: flex;
+               margin-bottom: 0.4em;
+               align-items: center;
+               background-color: black;
+
+               .file-index {
+                    min-width: 2.5em;
+                    background-color: black;
+                    color: white;
+                    text-align: center;
+                    font-size: 1.4em;
+                    font-weight: bold;
+               }
+
+               .download-btn {
+                    width: calc(100% - 2.5em);
+                    text-align: left;
+                    padding: 1em 2em;
+                    border: solid 3px #000;
+                    background-color: $white;
+                    color: $black;
+                    min-height: 4.2em;
+                    word-wrap: break-word;
+                    word-break: break-all;
+
+                    &:hover, &:focus {
+                         text-decoration: underline;
+                    }
+               }
+          }
+     }
+
+     #komplettering_group_vedlegg {
+          margin-top: 1.5em;
+     }
+     #privacy-container {
+          legend, #privacy-info {
+               background-size: 22px;
+               padding: 1em 2em;
+               width: 19em;
+               background-position: 0.2em center;
+               margin-left: 0.2em;
+
+               // .black-link {
+               //     color: $black;
+               // }
+
+               &:hover {
+                   color: $red;
+                   background-image: url("../ImageDB?imageName=icon_protected_hover.png");
+               }
+          }
+          #hide-info {
+               margin-left: -0.2em;
+          }
+
+     }
+
+
+     // legger upload-knapp utenfor vinduet
+     .file-upload {
+          width: unset !important;
+
+          input {
+               position: fixed;
+               left: -9999px;
+          }
+          label {
+               background-color: $red;
+               text-align: center;
+               border: solid 2px transparent;
+               position: absolute;
+               top: 0;
+               bottom: 0;
+               left: 0;
+               right: 0;
+               padding-top: 1.2em;
+               cursor: pointer;
+
+               &:hover {
+                   background-color: $dark-red !important;
+               }
+               &:focus, &.focused {
+                   outline: solid 5px $red !important;
+                   z-index: 3 !important;
+               }
+
+          }
+          #komplettering_upload_vedlegg_wrap {
+              width: calc(100% - 4px) !important;
+          }
+     }
+
+     #logout {
+          padding: 7% 7% 15% !important;
+     }
+}
+
+
+/*************************************************/
+/*                  OM ÄRENDET                   */
+/*************************************************/
+
+.role-containers {
+     legend {
+          padding: 3% 7% !important;
+          margin-left: 0em !important;
+          margin-bottom: 0.4em;
+     }
+     #handlaggare_legend {
+          margin-bottom: 0;
+     }
+     [id$="content"] {
+          padding: 6% !important;
+     }
+     > div {
+          margin-bottom: 1.8em;
+          @include box-shadow();
+     }
+     #info-content {
+          padding-top: 10% !important;
+     }
+}
+
+// tekstrad: kategori og tilhørende verdi
+.row {
+     display: block;
+     padding-bottom: 1.2em;
+
+     :first-child {
+          // width: 22%;
+          // max-width: 8em;
+          // padding-right: 1.6em;
+          // text-align: right !important;
+          font-weight: bold !important;
+          font-size: 0.9em !important;
+     }
+     :nth-child(2) {
+          font-size: 1em;
+          word-wrap: break-word;
+          word-break: break-all;
+          -webkit-hyphens: auto;
+          -moz-hyphens: auto;
+          hyphens: auto;
+     }
+
+     .adresse {
+          br:first-of-type {
+              display: none;
+         }
+
+         .poststed {
+              line-height: 1.8;
+          }
+     }
+}
+
+
+/*************************************************/
+/*                    FOOTER                     */
+/*************************************************/
+
+#wrap-case, #wrap-login {
+     display: flex;
+     flex-direction: column;
+     min-height: 100vh;
+     justify-content: space-between;
+
+     #footer {
+          width: 100%;
+          margin-top: 6em;
+          flex-grow: 2;
+
+           div {
+              width: 86%;
+              margin: auto;
+          }
+     }
+
+}
+
+
+
+/*************************************************/
+/*                 MEDIA QUERIES                 */
+/*************************************************/
+
+
+
+/* mob */
+@media only screen and (min-width : 321px) {
+     .row {
+          font-size: 0.9em;
+     }
+
+}
+
+
+
+
+@media only screen
+and (min-width : 360px) {
+
+     .digiforms_validation_message {
+          font-size: 1em;
+     }
+
+     .logout-alert, .reset-password {
+         padding: 2em !important;
+    }
+
+     .page-container {
+
+          // .status-container .status {
+          //      font-size: 0.9em;
+          // }
+
+          .upload-helptext {
+               margin-right: 1em;
+          }
+
+          .accordion {
+               .btn-toggle-menu {
+                    font-size: 1.4em;
+               }
+               .row {
+                    font-size: 1em;
+               }
+          }
+          .message {
+               .role {
+                    font-size: 1.6em;
+                    top: 1em;
+                    left: 3em;
+               }
+               .unread-NY {
+                    left: 4em !important;
+               }
+               .name {
+                   font-size: 0.9em;
+                   margin-top: -1.6em;
+                   margin-left: 3.1em;
+               }
+               .receiver .receiver-list {
+                   margin: 0em 2.7em 1.2em;
+               }
+          }
+     }
+}
+
+
+@media only screen
+and (min-width : 480px) {
+
+     .page-container {
+
+          .help-btn {
+              top: 0em;
+          }
+          .help-text {
+               margin-top: 0.8em;
+          }
+          .accordion {
+               .btn-toggle-menu {
+                    padding: 1.4em;
+                    padding-left: 3.4em;
+               }
+
+               .message {
+                    .message_content {
+                         padding: 5em 4em 3.6em !important;
+
+                         .role {
+                             left: 3.5em;
+                         }
+                         .unread-NY {
+                              left: 4.7em !important;
+                         }
+
+                         .name {
+                             margin-left: 1.8em;
+                         }
+
+                         .receiver {
+                              margin-left: unset;
+                         }
+                    }
+               }
+          }
+          .message .receiver .receiver-list {
+               margin: 0em 1.6em 1.2em;
+          }
+     }
+
+     & #temp-message_content {
+          padding-top: 4em !important;
+          padding-bottom: 2.6em !important
+     }
+}
+
+
+/* ipad portrait */
+@media only screen
+and (min-width : 768px) {
+
+     #to-top {
+         min-height: 8.4em;
+         width: 8.4em;
+         background-size: 4em;
+         right: 4.2em;
+         bottom: 1.833em;
+     }
+
+     .logout-alert {
+          padding: 3em !important;
+     }
+
+     #header {
+          margin: 2rem 3em;
+          width: unset;
+
+          .h1 {
+               display: block !important;
+               width: calc(100% - 18em);
+               text-align: center;
+               margin-top: 0.8em;
+          }
+
+          #header-content #logout-header {
+               display: flex;
+               position: absolute;
+               right: 0;
+               top: 0;
+               width: 100%;
+
+               #btn-logout-header {
+                    font-size: .875em !important;
+                    background-image: url("../ImageDB?imageName=icon_log_out.png");
+                    background-repeat: no-repeat;
+                    background-size: 1.6em;
+                    padding-left: 2.1em;
+                    width: 10em !important;
+                    position: absolute;
+                    right: -2.4em;
+                    top: -2.2em;
+                    border: none;
+                    cursor: pointer;
+                    min-height: 4em;
+                    color: $grey;
+                    font-weight: bold;
+                    font-style: normal;
+                    background-color: transparent;
+                    background-position: left center;
+                    text-align: left;
+
+                    &:hover {
+                         background-image: url("../ImageDB?imageName=icon_log_out_hover.png");
+                         color: $red;
+                    }
+               }
+
+               #logged-in-person {
+                    // width: 15em;
+                    position: absolute;
+                    right: 10em;
+                    top: -1em;
+               }
+          }
+
+          #logo {
+               width: 12em !important;
+          }
+     }
+
+     // viser infotekst på stor skjerm
+     .big-screen-container > div {
+         outline: solid 0.6em $lighter-grey;
+
+         &#content-info {
+              outline: none;
+
+              #info-text-arendet {
+                  margin: 0em 2em;
+                  text-align: center !important;
+             }
+         }
+     }
+
+     .page-container {
+          h2 {
+               display: block;
+               font-size: 2.73em;
+               color: $black;
+               margin-top: 0em;
+               margin-bottom: 0.9em;
+          }
+          #content-historik {
+               background-color: $lighter-grey;
+
+               .date {
+                    right: 1.3em;
+               }
+          }
+          #content-om-arendet {
+               background-color: $lighter-grey;
+          }
+          #content-info { // vises første gang, før meny er trykket på
+               display: block;
+               background-color: $white;
+               padding-top: 2% !important;
+
+               img {
+                    margin-top: 4%;
+               }
+          }
+
+          .status-container {
+               padding: 1em;
+               margin: -0.6em -0.6em 0em -0.6em;
+          }
+          .menu-container {
+               margin-top: 0.6em;
+          }
+
+          .accordion {
+               // background-image: url("../ImageDB?imageName=icon_view.png");
+
+               .btn-toggle-menu {
+                    padding: 10%;
+                    padding-left: 3.6em;
+                    margin-bottom: 0.5em;
+                    background-position: 1em center !important;
+                    font-size: 1.2em;
+                    outline: solid 0.5em $lighter-grey;
+                    z-index: 1;
+                    background-color: $white !important;
+                    color: $black;
+
+                    &:hover {
+                         background-color: $red !important;
+                         color: white;
+                    }
+
+                    &::before {
+                         background-image: url("../ImageDB?imageName=icon_view.png"); // erstattter toggle-symbol med "+"
+                         background-size: 1.5rem;
+                         right: 2rem;
+                    }
+
+                    &:hover::before {
+                        background-image: url("../ImageDB?imageName=icon_view_hover.png");
+                    }
+
+                    &#btn-historik {
+                         background-image: url("../ImageDB?imageName=icon_history_black.png");
+                         span span:first-of-type {
+                              padding: 0.15em 0.5em;
+                              border: none;
+                              background-color: $light-grey;
+                         }
+                         &:hover {
+                              background-image: url("../ImageDB?imageName=icon_history.png");
+                              span span:first-of-type {
+                                   background-color: $white;
+                                   color: $red;
+                              }
+                         }
+                    }
+                    &#btn-komplettera {
+                         background-image: url("../ImageDB?imageName=icon_add_document_black.png");
+                         &:hover {
+                              background-image: url("../ImageDB?imageName=icon_add_document.png");
+                         }
+                    }
+                    &#btn-om-arendet {
+                         background-image: url("../ImageDB?imageName=icon_information_black.png");
+                         &:hover {
+                              background-image: url("../ImageDB?imageName=icon_information.png");
+                         }
+                    }
+               }
+          }
+
+          .message .receiver .receiver-list {
+               margin: 0em 2.7em 1.2em;
+          }
+     }
+
+     #wrap-login {
+
+          min-height: 67vh;
+
+          .reset-password {
+              padding: 3em !important;
+          }
+
+          .page-container {
+               background-color: $red;
+               color: $white;
+               margin: 3rem;
+               position: relative;
+
+               &_legend {
+                    position: absolute;
+                    padding: 3rem !important;
+                    font-size: 2.5em !important;
+                    margin: unset;
+               }
+               &_content {
+                    padding: 3rem;
+               }
+
+               .flex-container {
+                    display: flex;
+
+                    > div {
+                         width: 50%;
+                         padding: 0;
+                    }
+
+                    .accordion-btn { // gjemmer knapp for å toggle info
+                         display: none;
+                    }
+                    .accordion-content { // viser alltid infoen på større skjerm
+                         display: block;
+                         background-color: transparent;
+                         padding: 6rem 3rem 0em 0em !important;
+
+                         #info-text-arendet {
+                              color: $white !important;
+                              margin-top: -1em !important;
+                              font-size: 1.2em !important;
+                              line-height: 1.5em !important;
+                         }
+                    }
+                    .element-container {
+                         border-left: solid 5px $pink;
+                         padding-left: 3rem;
+                         max-width: 30em;
+
+                         #login_legend {
+                              font-size: 1.8em !important;
+                         }
+                    }
+               }
+               .new-password {
+                   padding: 6em 0em 1em !important;
+                   max-width: 30em;
+               }
+          }
+          .header-folj-arendet { // navn på fane
+               text-transform: unset;
+               color: white;
+          }
+     }
+     .wrap-page {
+          min-height: 67vh;
+          display: flex;
+          margin: 0em 3rem;
+          padding: 1.2em 0.6em;
+
+          // viser container for todelt innhold på større skjerm
+          .big-screen-container {
+               display: block;
+               width: 100%;
+          }
+          .small-screen-container {
+               min-width: 16em;
+               margin-right: 0.7em;
+
+               // skjuler alt som ikke er meny-alternativer
+               &_legend, #info-arende, #info-arende::before, #logout {
+                    display: none !important;
+               }
+
+               // skjuler vanlige accordions
+               .content-small-screen {
+                    display: none !important;
+               }
+          }
+     }
+}
+
+
+/* pc */
+@media only screen
+and (min-width : 980px) {
+
+     #wrap-case #header {
+         margin: 2rem 4em;
+     }
+
+     .page-container {
+
+          .accordion .btn-toggle-menu {
+               font-size: 1.3em !important;
+               padding-left: 3.3em !important;
+
+               &::before {
+                   background-size: 1.2em;
+               }
+          }
+
+          .row {
+               display: flex;
+               padding-bottom: 1.4em;
+
+               :first-child {
+                    width: 28%;
+                    max-width: 8em;
+                    padding-right: 1.6em;
+                    text-align: right !important;
+               }
+          }
+
+     }
+
+     .wrap-page {
+          margin: 0em 4rem;
+          padding: 1.4em 0.7em;
+
+          .big-screen-container > div {
+              outline-width: 0.66em;
+          }
+
+          .small-screen-container {
+              min-width: 17em;
+         }
+
+          .message {
+               margin-bottom: 4em;
+               @include box-shadow();
+
+               .date {
+                   right: 1.6em !important;
+                   top: 1.4em;
+               }
+          }
+          #wrap-komplettera {
+               max-width: 34em;
+               margin: auto;
+
+               .text {
+                    color: black;
+               }
+
+               textarea {
+                    @include box-shadow();
+               }
+          }
+          #wrap-om-arendet {
+               max-width: 34em;
+               margin: auto;
+
+               > div {
+                    margin-bottom: 3em;
+                    @include box-shadow();
+
+                    .row div {
+                         font-size: 1em !important;
+                    }
+               }
+          }
+     }
+}
+
+
+/* ipad landscape */
+@media only screen
+and (min-width : 1024px) {
+     .wrap-page .small-screen-container {
+         min-width: 18em;
+     }
+}
+
+
+/* big screen */
+@media only screen
+and (min-width : 1280px) {
+
+     .max-width-content {
+          width: 88em;
+          max-width: 100%;
+          margin: auto;
+     }
+
+     .h1 {
+          width: calc(100% - 22em) !important;
+     }
+
+     .page-container {
+
+          .status-container {
+              padding: 1.4em;
+
+              .status {
+                   font-size: 1em;
+                   padding: 0.8em;
+              }
+              .status-text {
+                   font-size: 1em;
+                   padding: 0.6em 0.6em 0.6em 1.5em;
+                   line-height: 1.4em;
+              }
+          }
+          .accordion {
+               .btn-toggle-menu {
+                   font-size: 1.6em !important;
+                   padding-left: 3.7em !important;
+
+                   &::before {
+                       right: 2.1em;
+                  }
+               }
+          }
+
+          .message {
+               .message_content {
+                    padding: 5em 3.7em 3.7em !important;
+               }
+               .name {
+                    margin-left: 1.2em;
+               }
+               .receiver {
+                    margin-left: -1.7em;
+               }
+          }
+     }
+
+     #wrap-login {
+          .page-container_content {
+              padding: 5rem;
+          }
+          .header-folj-arendet, .page-container > fieldset > legend {
+              padding: 5rem 5rem 0rem !important;
+          }
+     }
+
+     .wrap-page {
+          padding: 1.6em 0.8em;
+
+          .page-container {
+               h2 {
+                    font-size: 3em;
+               }
+               .accordion-content {
+                    padding: 2.5em 7% 10em;
+                    .message {
+                         margin-bottom: 6em;
+                    }
+               }
+
+          }
+
+          .big-screen-container > div {
+              outline-width: 0.8em;
+          }
+
+          .small-screen-container {
+              min-width: 22em;
+          }
+     }
+}
+
+
+/* bigger screen */
+@media only screen
+and (min-width : 1420px) {
+
+}
